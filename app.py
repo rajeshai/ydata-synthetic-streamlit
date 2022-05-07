@@ -72,14 +72,14 @@ def run():
             cat_cols = st.multiselect('Choose categorical columns', [x for x in data.columns if x not in num_cols], key=2)
 
         with col2:
-            noise_dim = st.slider('Select noise dimension', 0,200,128)
-            layer_dim = st.slider('Select the layer dimension', 0,200,128)
-            batch_size = st.slider('Select batch size', 0,500, 500)
+            noise_dim = st.number_input('Select noise dimension', 0,200,128,1)
+            layer_dim = st.number_input('Select the layer dimension', 0,200,128,1)
+            batch_size = st.number_input('Select batch size', 0,500, 500,1)
 
         with col3:
-            log_step = st.slider('Select sample interval', 0,200,100)
+            log_step = st.number_input('Select sample interval', 0,200,100,1)
             epochs = st.number_input('Select the number of epochs',0,50,2,1)
-            learning_rate = st.number_input('Select the learning rate',0.01,0.1,value=0.01, step=0.01)
+            
 
         with col4:
             beta_1 = st.slider('Select first beta co-efficient', 0.0, 1.0, 0.5)
@@ -94,7 +94,7 @@ def run():
             st.write('Model Training is in progress. It may take a few minutes. Please wait for a while.')
             models_dir = './cache'
             gan_args = ModelParameters(batch_size=batch_size,
-                           lr=learning_rate,
+                           lr=0.00005,
                            betas=(beta_1, beta_2),
                            noise_dim=noise_dim,
                            layers_dim=layer_dim)
