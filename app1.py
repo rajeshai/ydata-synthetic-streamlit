@@ -56,7 +56,6 @@ def run():
         synthesizer.save('data_synth.pkl')
         synthesizer = model.load('data_synth.pkl')
         data_syn = synthesizer.sample(samples)
-        st.success('Synthetic dataset with the given number of samples is generated!!')
         return data_syn
     
     @st.cache
@@ -114,7 +113,8 @@ def run():
 
     if st.button('Click here to start the training process'):
         if data is not None:
-            train(data)
+            data_syn = train(data)
+            st.success('Synthetic dataset with the given number of samples is generated!!')
         else:
             st.write('Please upload a dataset to train')
         
