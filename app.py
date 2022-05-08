@@ -79,7 +79,7 @@ def run():
         with col3:
             log_step = st.number_input('Select sample interval', 0,200,100,1)
             epochs = st.number_input('Select the number of epochs',0,50,2,1)
-            
+            learning_rate = st.number_input('Select learning rate(x1e-3', 0.01, 0.1, 0.05, 0.01)
 
         with col4:
             beta_1 = st.slider('Select first beta co-efficient', 0.0, 1.0, 0.5)
@@ -94,7 +94,7 @@ def run():
             st.write('Model Training is in progress. It may take a few minutes. Please wait for a while.')
             models_dir = './cache'
             gan_args = ModelParameters(batch_size=batch_size,
-                           lr=0.00005,
+                           lr=learning_rate*0.001,
                            betas=(beta_1, beta_2),
                            noise_dim=noise_dim,
                            layers_dim=layer_dim)
@@ -108,14 +108,21 @@ def run():
             synthesizer = model.load('data_synth.pkl')
             data_syn = synthesizer.sample(samples)
             st.success('Synthetic dataset with the given number of samples is generated!!')
-            csv = convert_df(data_syn)
-            st.download_button(
+            if st.button('Click here to download the dataset'):
+                if data_syn is not None:
+                    csv = convert_df(data_syn)
+                    st.download_button(
             label="Download data as CSV",
             data=csv,
             file_name='data_syn.csv',
             mime='text/csv')
+                else:
+                    st.write('Please generate a synthetic dataset to download!!')
             if st.button('Click here to compare to the two datasets'):
-                plot_graphs(cat_cols)
+                if data_syn is not None:
+                    plot_graphs(cat_cols)
+                else:
+                    st.write('Can not plot the graphs. Please create a synthetic dataset!!')
 
 
 if __name__== '__main__':
