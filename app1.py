@@ -121,11 +121,11 @@ def run():
             for i, j in enumerate(cat_cols):
                 sns.countplot(x=j, data=data, ax = axes[i,0])
                 sns.countplot(x=j, data=data_synn, ax = axes[i,1])
-            
+            st.pyplot(f)
             download(data_synn)
         else:
             st.write('Upload a dataset to train!!')
 
-            
+
 if __name__== '__main__':
     run()
