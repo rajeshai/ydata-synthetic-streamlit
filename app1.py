@@ -116,23 +116,15 @@ def run():
             st.write('Model Training is in progress. It may take a few minutes. Please wait for a while.')
             data_synn = train(data)
             st.success('Synthetic dataset with the given number of samples is generated!!')
-        else:
-            st.write('Please upload a dataset to train')
-        
-    if st.button('Click here to download the dataset'):
-        if data is not None:
+        if st.button('Click here to download the dataset'):
             download(data_synn)
-        else:
-            st.write('Please generate a synthetic dataset to download!!')
-    if st.button('Click here to compare to the two datasets'):
-        if data is not None:
+        if st.button('Click here to compare to the two datasets'):
             f , axes =  plt.subplots(len(cat_cols),2, figsize=(20,25))
             f.suptitle('Real data vs Synthetic data')
             for i, j in enumerate(cat_cols):
                 sns.countplot(x=j, data=data, ax = axes[i,0])
                 sns.countplot(x=j, data=data_synn, ax = axes[i,1])
-        else:
-            st.write('Can not plot the graphs. Please create a synthetic dataset!!')
+
 
 
 if __name__== '__main__':
