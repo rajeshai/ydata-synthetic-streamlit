@@ -30,12 +30,11 @@ def run():
     st.sidebar.header('Steps to follow')
     st.sidebar.markdown('''
 - Upload any preprocessed tabular classification dataset.
-- Choose the parameters in the adjacent window appropriately
-- Since this is a demo, please choose less number of epochs for quick completion of training
+- Choose the parameters in the adjacent window appropriately.
+- Since this is a demo, please choose less number of epochs for quick completion of training.
 - After choosing all parameters, Click the button under the parameters to start training.
-- After the training is complete, you will see a button to download your synthetic dataset. Click that to download.
-- You will also see a button to compare your real dataset with the synthetic dataset that's generated.
-- Click that button to get the graphs comparing two datasets.''')
+- After the training is complete, you will see a graph comparing both real data set and synthetic dataset. Categorical columns are used to compare.
+- You will also see a button to download your synthetic dataset. Click that button to download your dataset.''')
 
     st.sidebar.markdown('''[![Repo](https://badgen.net/badge/icon/GitHub?icon=github&label)](https://github.com/ydataai/ydata-synthetic)''',unsafe_allow_html=True)
 
@@ -62,17 +61,6 @@ def run():
     def convert_df(df):
         return df.to_csv().encode('utf-8')
 
-    @st.cache
-    def download(df):
-        if df is not None:
-            csv = convert_df(df)
-            st.download_button(
-            label="Download data as CSV",
-            data=csv,
-            file_name='data_syn.csv',
-            mime='text/csv')
-        else:
-            st.write('Please generate a synthetic dataset to download!!')
     
     if data is not None:
         data = pd.read_csv(data)
@@ -116,13 +104,19 @@ def run():
             st.write('Model Training is in progress. It may take a few minutes. Please wait for a while.')
             data_synn = train(data)
             st.success('Synthetic dataset with the given number of samples is generated!!')
+            st.subheader('Real Data vs Synthetic Data')
             f , axes =  plt.subplots(len(cat_cols),2, figsize=(20,25))
             f.suptitle('Real data vs Synthetic data')
             for i, j in enumerate(cat_cols):
                 sns.countplot(x=j, data=data, ax = axes[i,0])
                 sns.countplot(x=j, data=data_synn, ax = axes[i,1])
             st.pyplot(f)
-            download(data_synn)
+            st.download_button(
+            label="Download data as CSV",
+            data=convert_df(data_synn),
+            file_name='data_syn.csv',
+            mime='text/csv')
+            st.balloons()
         else:
             st.write('Upload a dataset to train!!')
 
