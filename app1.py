@@ -40,7 +40,6 @@ def run():
 
     @st.cache
     def train(df):
-        st.write('Model Training is in progress. It may take a few minutes. Please wait for a while.')
         models_dir = './cache'
         gan_args = ModelParameters(batch_size=batch_size,
                            lr=learning_rate*0.001,
@@ -113,6 +112,7 @@ def run():
 
     if st.button('Click here to start the training process'):
         if data is not None:
+            st.write('Model Training is in progress. It may take a few minutes. Please wait for a while.')
             data_syn = train(data)
             st.success('Synthetic dataset with the given number of samples is generated!!')
         else:
