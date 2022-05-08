@@ -90,39 +90,39 @@ def run():
 
 
 
-        if st.button('Click here to start the training process'):
-            st.write('Model Training is in progress. It may take a few minutes. Please wait for a while.')
-            models_dir = './cache'
-            gan_args = ModelParameters(batch_size=batch_size,
+    if st.button('Click here to start the training process'):
+        st.write('Model Training is in progress. It may take a few minutes. Please wait for a while.')
+        models_dir = './cache'
+        gan_args = ModelParameters(batch_size=batch_size,
                            lr=learning_rate*0.001,
                            betas=(beta_1, beta_2),
                            noise_dim=noise_dim,
                            layers_dim=layer_dim)
 
-            train_args = TrainParameters(epochs=epochs,
+        train_args = TrainParameters(epochs=epochs,
                              sample_interval=log_step)
             
-            synthesizer = model(gan_args, n_discriminator=3)
-            synthesizer.train(data, train_args, num_cols, cat_cols)
-            synthesizer.save('data_synth.pkl')
-            synthesizer = model.load('data_synth.pkl')
-            data_syn = synthesizer.sample(samples)
-            st.success('Synthetic dataset with the given number of samples is generated!!')
-            if st.button('Click here to download the dataset'):
-                if data_syn is not None:
-                    csv = convert_df(data_syn)
-                    st.download_button(
+        synthesizer = model(gan_args, n_discriminator=3)
+        synthesizer.train(data, train_args, num_cols, cat_cols)
+        synthesizer.save('data_synth.pkl')
+        synthesizer = model.load('data_synth.pkl')
+        data_syn = synthesizer.sample(samples)
+        st.success('Synthetic dataset with the given number of samples is generated!!')
+    if st.button('Click here to download the dataset'):
+        if data_syn is not None:
+            csv = convert_df(data_syn)
+            st.download_button(
             label="Download data as CSV",
             data=csv,
             file_name='data_syn.csv',
             mime='text/csv')
-                else:
-                    st.write('Please generate a synthetic dataset to download!!')
-            if st.button('Click here to compare to the two datasets'):
-                if data_syn is not None:
-                    plot_graphs(cat_cols)
-                else:
-                    st.write('Can not plot the graphs. Please create a synthetic dataset!!')
+        else:
+            st.write('Please generate a synthetic dataset to download!!')
+    if st.button('Click here to compare to the two datasets'):
+        if data_syn is not None:
+            plot_graphs(cat_cols)
+        else:
+            st.write('Can not plot the graphs. Please create a synthetic dataset!!')
 
 
 if __name__== '__main__':
