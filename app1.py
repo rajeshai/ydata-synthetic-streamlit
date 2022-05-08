@@ -10,6 +10,7 @@ from ydata_synthetic.synthesizers import ModelParameters, TrainParameters
 st.set_page_config(layout="wide",initial_sidebar_state="auto")
 os.environ['TF_XLA_FLAGS'] = '--tf_xla_enable_xla_devices'
 def run():
+    global data_synn
     st.sidebar.image('YData_logo.svg')
     st.title('Generate synthetic data for a tabular classification dataset using [ydata-synthetic](https://github.com/ydataai/ydata-synthetic)')
     st.markdown('This streamlit application can generate synthetic data for your dataset. Please read all the instructions in the sidebar before you start the process.')
@@ -113,14 +114,14 @@ def run():
     if st.button('Click here to start the training process'):
         if data is not None:
             st.write('Model Training is in progress. It may take a few minutes. Please wait for a while.')
-            data_syn = train(data)
+            data_synn = train(data)
             st.success('Synthetic dataset with the given number of samples is generated!!')
         else:
             st.write('Please upload a dataset to train')
         
     if st.button('Click here to download the dataset'):
         if data is not None:
-            download(data_syn)
+            download(data_synn)
         else:
             st.write('Please generate a synthetic dataset to download!!')
     if st.button('Click here to compare to the two datasets'):
@@ -129,7 +130,7 @@ def run():
             f.suptitle('Real data vs Synthetic data')
             for i, j in enumerate(cat_cols):
                 sns.countplot(x=j, data=data, ax = axes[i,0])
-                sns.countplot(x=j, data=data_syn, ax = axes[i,1])
+                sns.countplot(x=j, data=data_synn, ax = axes[i,1])
         else:
             st.write('Can not plot the graphs. Please create a synthetic dataset!!')
 
