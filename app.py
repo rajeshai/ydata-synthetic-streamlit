@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-from ydata_synthetic.synthesizers.regular import DRAGAN, CGAN, CRAMERGAN, WGAN_GP
+from ydata_synthetic.synthesizers.regular import DRAGAN, CGAN, WGAN_GP
 from ydata_synthetic.synthesizers import ModelParameters, TrainParameters
 
 st.set_page_config(layout="wide",initial_sidebar_state="auto")
