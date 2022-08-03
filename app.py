@@ -68,13 +68,11 @@ def run():
         st.header('Choose the parameters!!')
         col1, col2, col3,col4 = st.columns(4)
         with col1:
-            model = st.selectbox('Choose the GAN model', ['DRAGAN','CGAN','CRAMEGAN','WGAN_GP'],key=1)
+            model = st.selectbox('Choose the GAN model', ['DRAGAN','CGAN','WGAN_GP'],key=1)
             if model=='DRAGAN':
                 model = DRAGAN
             elif model=='CGAN':
                 model=CGAN
-            elif model=='CRAMEGAN':
-                model = CRAMERGAN
             else:
                 model = WGAN_GP
             num_cols = st.multiselect('Choose the numerical columns', data.columns,key=1)
