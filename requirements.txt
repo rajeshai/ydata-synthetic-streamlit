@@ -3,4 +3,4 @@ matplotlib
 numpy
 seaborn
 streamlit
-ydata-synthetic == 1.0
+ydata-synthetic==0.7.1
