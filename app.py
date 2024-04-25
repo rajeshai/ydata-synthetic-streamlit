@@ -3,7 +3,7 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-from ydata_synthetic.synthesizers.regular import DRAGAN, CGAN, CRAMERGAN, WGAN_GP
+from ydata_synthetic.synthesizers.regular import DRAGAN, CGAN, WGAN_GP
 from ydata_synthetic.synthesizers import ModelParameters, TrainParameters
 
 st.set_page_config(layout="wide",initial_sidebar_state="auto")
@@ -68,8 +68,6 @@ def run():
                 model = DRAGAN
             elif model=='CGAN':
                 model=CGAN
-            elif model=='CRAMEGAN':
-                model = CRAMERGAN
             else:
                 model = WGAN_GP
             num_cols = st.multiselect('Choose the numerical columns', data.columns,key=1)
