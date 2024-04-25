@@ -1,10 +1,9 @@
 import os
 import streamlit as st
 import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-from ydata_synthetic.synthesizers.regular import DRAGAN, CGAN, WGAN_GP
+from ydata_synthetic.synthesizers.regular import DRAGAN, CGAN, CRAMERGAN, WGAN_GP
 from ydata_synthetic.synthesizers import ModelParameters, TrainParameters
 
 st.set_page_config(layout="wide",initial_sidebar_state="auto")
@@ -40,7 +39,7 @@ def run():
 
     @st.cache
     def train(df):
-        models_dir = './cache'
+        #models_dir = './cache'
         gan_args = ModelParameters(batch_size=batch_size,
                            lr=learning_rate*0.001,
                            betas=(beta_1, beta_2),
@@ -49,30 +48,28 @@ def run():
 
         train_args = TrainParameters(epochs=epochs,
                              sample_interval=log_step)
-            
         synthesizer = model(gan_args, n_discriminator=3)
         synthesizer.train(data, train_args, num_cols, cat_cols)
         synthesizer.save('data_synth.pkl')
         synthesizer = model.load('data_synth.pkl')
         data_syn = synthesizer.sample(samples)
         return data_syn
-    
     @st.cache
     def convert_df(df):
         return df.to_csv().encode('utf-8')
-
-    
     if data is not None:
         data = pd.read_csv(data)
         data.dropna(inplace=True)
         st.header('Choose the parameters!!')
         col1, col2, col3,col4 = st.columns(4)
         with col1:
-            model = st.selectbox('Choose the GAN model', ['DRAGAN','CGAN','WGAN_GP'],key=1)
+            model = st.selectbox('Choose the GAN model', ['DRAGAN','CGAN','CRAMEGAN','WGAN_GP'],key=1)
             if model=='DRAGAN':
                 model = DRAGAN
             elif model=='CGAN':
                 model=CGAN
+            elif model=='CRAMEGAN':
+                model = CRAMERGAN
             else:
                 model = WGAN_GP
             num_cols = st.multiselect('Choose the numerical columns', data.columns,key=1)
@@ -92,11 +89,6 @@ def run():
             beta_1 = st.slider('Select first beta co-efficient', 0.0, 1.0, 0.5)
             beta_2 = st.slider('Select second beta co-efficient', 0.0, 1.0, 0.9)
             samples = st.number_input('Select the number of synthetic samples to be generated', 0, 400000, step=1000)
-
-
-
-
-
     if st.button('Click here to start the training process'):
         if data is not None:
             st.write('Model Training is in progress. It may take a few minutes. Please wait for a while.')
@@ -117,7 +109,5 @@ def run():
             st.balloons()
         else:
             st.write('Upload a dataset to train!!')
-
-
 if __name__== '__main__':
     run()
