@@ -3,7 +3,7 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-from ydata_synthetic.synthesizers.regular import DRAGAN, CGAN, WGAN_GP
+from ydata_synthetic.synthesizers.regular import CGAN, WGAN_GP
 from ydata_synthetic.synthesizers import ModelParameters, TrainParameters
 
 st.set_page_config(layout="wide",initial_sidebar_state="auto")
@@ -63,7 +63,7 @@ def run():
         st.header('Choose the parameters!!')
         col1, col2, col3,col4 = st.columns(4)
         with col1:
-            model = st.selectbox('Choose the GAN model', ['DRAGAN','CGAN','CRAMEGAN','WGAN_GP'],key=1)
+            model = st.selectbox('Choose the GAN model', ['CGAN','WGAN_GP'],key=1)
             if model=='DRAGAN':
                 model = DRAGAN
             elif model=='CGAN':
