@@ -3,7 +3,7 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-from ydata_synthetic.synthesizers.regular import CGAN, WGAN_GP
+from ydata_synthetic.synthesizers.regular import RegularSynthesizer
 from ydata_synthetic.synthesizers import ModelParameters, TrainParameters
 
 st.set_page_config(layout="wide",initial_sidebar_state="auto")
@@ -48,8 +48,8 @@ def run():
 
         train_args = TrainParameters(epochs=epochs,
                              sample_interval=log_step)
-        synthesizer = model(gan_args, n_discriminator=3)
-        synthesizer.train(data, train_args, num_cols, cat_cols)
+        synthesizer = RegularSynthesizer(modelname = model, gan_args, n_discriminator=3)
+        synthesizer.fit(data, train_args, num_cols, cat_cols)
         synthesizer.save('data_synth.pkl')
         synthesizer = model.load('data_synth.pkl')
         data_syn = synthesizer.sample(samples)
@@ -63,13 +63,11 @@ def run():
         st.header('Choose the parameters!!')
         col1, col2, col3,col4 = st.columns(4)
         with col1:
-            model = st.selectbox('Choose the GAN model', ['CGAN','WGAN_GP'],key=1)
-            if model=='DRAGAN':
-                model = DRAGAN
-            elif model=='CGAN':
-                model=CGAN
+            model = st.selectbox('Choose the GAN model', ['cgan','wgangp'],key=1)
+            if model=='cgan':
+                model=cgan
             else:
-                model = WGAN_GP
+                model = wgangp
             num_cols = st.multiselect('Choose the numerical columns', data.columns,key=1)
             cat_cols = st.multiselect('Choose categorical columns', [x for x in data.columns if x not in num_cols], key=2)
 
