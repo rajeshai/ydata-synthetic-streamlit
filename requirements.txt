@@ -3,4 +3,4 @@ matplotlib
 numpy
 seaborn
 streamlit
-ydata-sdk
+ydata-synthetic==1.4.0
