@@ -48,7 +48,7 @@ def run():
 
         train_args = TrainParameters(epochs=epochs,
                              sample_interval=log_step)
-        synthesizer = RegularSynthesizer(modelname = model, gan_args, n_discriminator=3)
+        synthesizer = RegularSynthesizer(modelname = model, model_parameters = gan_args, n_discriminator=3)
         synthesizer.fit(data, train_args, num_cols, cat_cols)
         synthesizer.save('data_synth.pkl')
         synthesizer = model.load('data_synth.pkl')
